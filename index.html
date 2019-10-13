@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div>
+    Hours:<br>
+    <input type="text" name="hours" value="01" id="hours">
+    <br>
+    Minutes:<br>
+    <input type="text" name="minutes" value="01" id="minutes">
+    <br>
+    Seconds:<br>
+    <input type="text" name="seconds" value="00" id="seconds">
+    <br>
+    Name:<br>
+    <input type="text" name="name" value="Walk a dog" id="name">
+    <br><br>
+    <button onclick="createTimer()">Click me</button>
+    <p id="here"></p>
+    <br>
+    <p>Time left: </p>
+    <p id="timeleft">24:00:00</p>
+</div>
+<ul id="timers">
+</ul>
+<p id="demo"></p>
+<script src="index.js"></script>
+</body>
+</html>
