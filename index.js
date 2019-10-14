@@ -116,7 +116,8 @@ function timerFunction () {
     let x
 
     this.playTimer = function (id) {
-        console.log(id)    
+        console.log(id)
+        clearInterval(x)    
         x = setInterval(function() {
             let timers = document.getElementById("timers").innerHTML.split('</li>')
             console.log(timers)
