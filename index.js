@@ -34,41 +34,46 @@ console.log(`1 sec: ${getTimeFromMillisec(1000)}
 1 hour: ${getTimeFromMillisec(1000 * 3600)}`)
 
 function createTimer () {
-    // считывание из поля ввода значения часов, минут, секунд
-    let hours = parseInt(document.getElementById("hours").value)
-    let minutes = parseInt(document.getElementById("minutes").value)
-    let seconds = parseInt(document.getElementById("seconds").value)
-    let name = document.getElementById("name").value
+    try {
+        // считывание из поля ввода значения часов, минут, секунд
+        let hours = parseInt(document.getElementById("hours").value)
+        let minutes = parseInt(document.getElementById("minutes").value)
+        let seconds = parseInt(document.getElementById("seconds").value)
+        let name = document.getElementById("name").value
+        console.log(hours, minutes, seconds)
+        if(isNaN(hours) || isNaN(minutes) || isNaN(seconds)) throw new Error('Value is NaN')
+        if(minutes > 60 || minutes < 0 || seconds > 60 || seconds < 0 || hours < 0 || hours > 24) throw new Error('Value not valid')
+        if(name == '') throw new Error('Give a name the timer.')
+        // кол-во времени в миллисекундах
+        let timeinmillisec = ((hours * 60 + minutes) * 60 + seconds) * 1000
 
-    // кол-во времени в миллисекундах
-    let timeinmillisec = ((hours * 60 + minutes) * 60 + seconds) * 1000
+        // считывание уже существующих таймеров
+        let line = document.getElementById("timers").innerHTML
+        let timers = document.getElementById("timers").innerHTML.split('</li>')
+        // подсчет времени на всех таймерах в миллисекундах
+        let timeOnTimers = getTimeFromArray(timers)
+        //console.log(timers)
 
-    // считывание уже существующих таймеров
-    let line = document.getElementById("timers").innerHTML
-    let timers = document.getElementById("timers").innerHTML.split('</li>')
-    // подсчет времени на всех таймерах в миллисекундах
-    let timeOnTimers = getTimeFromArray(timers)
-    console.log(timers)
+        // подсчет оставшегося времени
+        let timeleft = 24 * 3600 * 1000 - timeOnTimers - timeinmillisec
 
-    // подсчет оставшегося времени
-    let timeleft = 24 * 3600 * 1000 - timeOnTimers - timeinmillisec
-
-    // проверка того, что можно добавить таймер
-    let okay = (timeleft - timeinmillisec) > 0
-    if (okay) {        
+        // проверка того, что можно добавить таймер
+        let okay = (timeleft - timeinmillisec) > 0
+        if(!okay) throw new Error('Choose smaller amount of time.')
         line += `<li><div class="timer">Name: ${name}<br>Time: <div id="time${timers.length}">${hours}:${minutes}:${seconds}</div><button onclick="timing.playTimer(${timers.length})">Play</button><button onclick="timing.pauseTimer(${timers.length})">Pause</button></div></li>`
         document.getElementById("timers").innerHTML = line
         document.getElementById("timeleft").innerHTML = getTimeFromMillisec(timeleft)
-        document.getElementById("here").innerHTML = ''
-    } else {
-        document.getElementById("here").innerHTML = 'Choose smaller amount of time.'
-    }    
+        document.getElementById("here").innerHTML = ''  
+    } catch (e) {
+        document.getElementById("here").innerHTML = e
+    }
+    
 }
 
 function getTimeFromMillisec (distance) {
     //console.log(`getTimeFromMillisec: ${distance}`)
     // получает строку времени в виде чч:мм:сс
-    let hours = Math.floor(distance / (1000 * 60 * 60))
+        let hours = Math.floor(distance / (1000 * 60 * 60))
     let minutes = Math.floor(distance / (1000 * 60)) - hours * 60
     let seconds = Math.floor(distance / 1000) - minutes * 60 - hours * 3600
     return `${hours.toString()}:${minutes.toString()}:${seconds.toString()}`
