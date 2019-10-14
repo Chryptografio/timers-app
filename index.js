@@ -59,7 +59,7 @@ function createTimer () {
 
         // проверка того, что можно добавить таймер
         console.log(timeleft, timeinmillisec)
-        let okay = (timeleft) > 0
+        let okay = (timeleft) >= 0
         if(!okay) throw new Error('Choose smaller amount of time.')
         line += `<li><div class="timer">Name: ${name}<br>Time: <div id="time${timers.length}">${hours}:${minutes}:${seconds}</div><button onclick="timing.playTimer(${timers.length})">Play</button><button onclick="timing.pauseTimer(${timers.length})">Pause</button></div></li>`
         document.getElementById("timers").innerHTML = line
